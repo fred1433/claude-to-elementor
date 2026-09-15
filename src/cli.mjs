@@ -42,4 +42,4 @@ console.log(`in       ${inFile}`);
 console.log(`sections ${model.sections.length}  containers ${containers}  widgets ${widgets}`);
 console.log(`widgets  ${Object.entries(kinds).sort().map(([k, v]) => `${k}:${v}`).join('  ')}`);
 console.log(`out      ${tplPath}`);
-if (notes.length) { console.log('notes:'); for (const n of notes) console.log(`  - [${n.section}] ${n.what} — ${n.why}`); }
+if (notes.length) { console.log('notes:'); for (const n of notes) console.log(`  - [${n.section}] ${n.what}: ${n.why}`); }

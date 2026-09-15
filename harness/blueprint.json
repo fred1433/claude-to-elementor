@@ -3,7 +3,7 @@
     {
       "step": "setSiteOptions",
       "options": {
-        "blogname": "Claude to Elementor — fidelity harness",
+        "blogname": "Claude to Elementor fidelity harness",
         "permalink_structure": "/%postname%/",
         "blog_public": "0"
       }

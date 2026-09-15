@@ -40,7 +40,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 /* ------------------------------------------------------------ 1. convert */
 log('converting', path.relative(ROOT, CODED));
 const model = parsePage(fs.readFileSync(CODED, 'utf8'));
-const template = convert(model, { mediaBase: 'https://cleancutautoshield.com/wp-content/uploads/cte', title: 'CleanCut Auto Shield — Home' });
+const template = convert(model, { mediaBase: 'https://cleancutautoshield.com/wp-content/uploads/cte', title: 'CleanCut Auto Shield, Home' });
 const kit = buildKit();
 fs.mkdirSync(path.join(ROOT, 'out'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'out/template.json'), JSON.stringify(template, null, 2) + '\n');

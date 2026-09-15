@@ -22,12 +22,12 @@ jobs:
         run: node --test test/*.test.mjs
 
       - name: convert the coded page
-        run: node src/cli.mjs convert --in demo/coded/index.html --out out --media-base "https://cleancutautoshield.com/wp-content/uploads/cte" --title "CleanCut Auto Shield — Home"
+        run: node src/cli.mjs convert --in demo/coded/index.html --out out --media-base "https://cleancutautoshield.com/wp-content/uploads/cte" --title "CleanCut Auto Shield, Home"
 
       - name: the conversion is deterministic
         run: |
           cp out/template.json /tmp/first.json
-          node src/cli.mjs convert --in demo/coded/index.html --out out --media-base "https://cleancutautoshield.com/wp-content/uploads/cte" --title "CleanCut Auto Shield — Home" >/dev/null
+          node src/cli.mjs convert --in demo/coded/index.html --out out --media-base "https://cleancutautoshield.com/wp-content/uploads/cte" --title "CleanCut Auto Shield, Home" >/dev/null
           diff -q /tmp/first.json out/template.json && echo "same page in, byte-identical JSON out"
 
       - name: editability audit

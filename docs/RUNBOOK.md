@@ -31,7 +31,7 @@ node src/cli.mjs convert \
   --in path/to/page.html \
   --out out \
   --media-base "https://theclient.com/wp-content/uploads" \
-  --title "Client — Home"
+  --title "Client, Home"
 ```
 
 Out come two files. `out/template.json` is an Elementor library template, the
