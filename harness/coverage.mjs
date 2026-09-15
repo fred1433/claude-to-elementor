@@ -1,5 +1,5 @@
 /**
- * Does the coded page still carry the whole client page?
+ * Does the coded page still carry the whole source page?
  *
  * The fidelity score compares the Elementor render to the coded page it was
  * given, so if a section is dropped upstream, in the design step, both sides
@@ -24,7 +24,7 @@ export function coverage(inventory, model, rendered) {
     checks.push({
       name: `${want.name}: present in the coded page`,
       ok: inModel,
-      detail: inModel ? '' : `the client's homepage has a "${want.name}" section and the coded page does not`,
+      detail: inModel ? '' : `the source page has a "${want.name}" section and the coded page does not`,
     });
     const text = renderedText.get(want.id);
     const missing = text === undefined ? want.must : want.must.filter((m) => !text.includes(strip(m)));

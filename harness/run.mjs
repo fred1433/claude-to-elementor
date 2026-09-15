@@ -273,7 +273,7 @@ for (const s of result.sections) {
   for (const c of s.checks.filter((c) => !c.ok)) log(`        -> ${c.name}: ${c.detail}`);
 }
 log('');
-log(`coverage     ${cover.pass}/${cover.total} of the client's own sections and phrases`);
+log(`coverage     ${cover.pass}/${cover.total} of the source page's own sections and phrases`);
 for (const c of cover.checks.filter((c) => !c.ok)) log(`        -> ${c.name}: ${c.detail}`);
 log(`fidelity     ${result.pass}/${result.total} checks (${result.percent}%)`);
 log(`editability  ${edit.findings.filter((f) => f.ok).length}/${edit.findings.length} assertions`);
