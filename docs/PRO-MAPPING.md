@@ -45,9 +45,23 @@ the same grammar, stop the footer from being duplicated into every page. Until
 then, the footer converts as a reusable **saved section**, which gets most of the
 way there on the free tier.
 
-## One Elementor detail worth writing down
+## Two Elementor details worth writing down
 
-Containers and widgets do not name the entrance animation the same way.
+### The system colour slots are not labels
+
+Elementor's own widget stylesheets read them. A Heading falls back to the
+**Primary** colour, a Button falls back to **Accent**, and both rules outrank
+the kit's per-tag Theme Style. Put the brand red in the wrong slot and every
+call to action on the site comes out in whatever Accent happens to hold, while
+Site Settings shows the right palette and the editor looks fine. Here it
+rendered the client's Call button in black. Primary is the headline colour,
+Accent is the brand red, and a heading or a button added next month is right
+before anyone touches it.
+
+The harness now compares the rendered colour of the filled call to action on
+both sides, because text and links were all correct while the button was not.
+
+### Containers and widgets name the entrance animation differently
 A **widget** registers `_animation` and `_animation_delay`
 (`includes/widgets/common-base.php`); a **container** registers `animation` and
 `animation_delay` (`includes/elements/container.php`). Meanwhile

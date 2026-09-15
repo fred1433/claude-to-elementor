@@ -59,7 +59,7 @@ export function button(id, { text, href, variant = 'primary', align, animation, 
   if (variant === 'link') {
     s.background_color = 'rgba(0,0,0,0)';
     s.text_padding = px(0, 0, 0, 0);
-    s.__globals__ = { button_text_color: 'globals/colors?id=secondary' };
+    s.__globals__ = { button_text_color: 'globals/colors?id=accent' };
   }
   if (animation) { s._animation = animation; if (delay) s._animation_delay = delay; }
   return widget(id, 'button', s);
@@ -107,6 +107,6 @@ export function starRating(id, { rating = 5, title }) {
     star_style: 'star_fontawesome',
     title,
     unmarked_star_style: 'outline',
-    __globals__: { stars_color: 'globals/colors?id=secondary', title_color: 'globals/colors?id=text', title_typography_typography: 'globals/typography?id=text' },
+    __globals__: { stars_color: 'globals/colors?id=accent', title_color: 'globals/colors?id=text', title_typography_typography: 'globals/typography?id=text' },
   });
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T14:01:10.697Z",
+  "generatedAt": "2026-09-15T14:13:49.590Z",
   "source": "demo/coded/index.html",
   "wordpress": "6.8",
   "sections": [
@@ -32,10 +32,15 @@
           "name": "images present and loaded (1)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
-      "visual": 95.6,
+      "visual": 95.7,
       "heights": {
         "coded": 846,
         "elementor": 785
@@ -108,10 +113,15 @@
           "name": "images present and loaded (1)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
-      "visual": 92,
+      "visual": 92.2,
       "heights": {
         "coded": 657,
         "elementor": 621
@@ -139,6 +149,11 @@
         },
         {
           "name": "links preserved (6)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "call to action colour",
           "ok": true,
           "detail": ""
         }
@@ -245,10 +260,15 @@
           "name": "images present and loaded (1)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
-      "visual": 94.4,
+      "visual": 94.3,
       "heights": {
         "coded": 657,
         "elementor": 641
@@ -278,10 +298,15 @@
           "name": "links preserved (2)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
-      "visual": 97.6,
+      "visual": 98.4,
       "heights": {
         "coded": 545,
         "elementor": 523
@@ -316,10 +341,15 @@
           "name": "images present and loaded (1)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
-      "visual": 95.8,
+      "visual": 95.7,
       "heights": {
         "coded": 467,
         "elementor": 405
@@ -354,6 +384,11 @@
           "name": "images present and loaded (1)",
           "ok": true,
           "detail": ""
+        },
+        {
+          "name": "call to action colour",
+          "ok": true,
+          "detail": ""
         }
       ],
       "ok": true,
@@ -365,8 +400,8 @@
     }
   ],
   "fidelity": {
-    "passed": 46,
-    "total": 46,
+    "passed": 53,
+    "total": 53,
     "percent": 100
   },
   "extraSections": [],

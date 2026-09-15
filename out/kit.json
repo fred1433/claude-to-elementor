@@ -7,8 +7,8 @@
     },
     {
       "_id": "secondary",
-      "title": "Brand Red",
-      "color": "#ED1B24"
+      "title": "Section Black",
+      "color": "#0A0A0A"
     },
     {
       "_id": "text",
@@ -17,8 +17,8 @@
     },
     {
       "_id": "accent",
-      "title": "Section Black",
-      "color": "#0A0A0A"
+      "title": "Brand Red",
+      "color": "#ED1B24"
     }
   ],
   "custom_colors": [

@@ -13,9 +13,9 @@
 
 export const GLOBAL = {
   headline: 'globals/colors?id=primary',
-  brand: 'globals/colors?id=secondary',
+  surface: 'globals/colors?id=secondary',
   body: 'globals/colors?id=text',
-  surface: 'globals/colors?id=accent',
+  brand: 'globals/colors?id=accent',
   card: 'globals/colors?id=cardblk',
   panel: 'globals/colors?id=panelbk',
   hairline: 'globals/colors?id=hairlin',
@@ -37,8 +37,8 @@ export const ROLE = {
   h3: { title_color: 'globals/colors?id=primary', typography_typography: 'globals/typography?id=secondary' },
   h4: { title_color: 'globals/colors?id=primary', typography_typography: 'globals/typography?id=person17' },
   h5: { title_color: 'globals/colors?id=mutedgy', typography_typography: 'globals/typography?id=kicker12' },
-  h6: { title_color: 'globals/colors?id=secondary', typography_typography: 'globals/typography?id=accent' },
-  stepnum: { title_color: 'globals/colors?id=secondary', typography_typography: 'globals/typography?id=stepnum' },
+  h6: { title_color: 'globals/colors?id=accent', typography_typography: 'globals/typography?id=accent' },
+  stepnum: { title_color: 'globals/colors?id=accent', typography_typography: 'globals/typography?id=stepnum' },
 };
 
 const type = (family, size, weight, lh, ls, transform) => ({
@@ -62,13 +62,20 @@ const themeTag = (prefix, color, t, mobileSize) => {
 export function buildKit() {
   return {
     // --- palette, read off the client's live stylesheet -------------------
-    // "Primary" is the pair Elementor hands to a heading a client drops in
-    // later, so it is the headline style, not the brand accent.
+    /**
+     * The four system slots are not free-form labels: Elementor's own widget
+     * stylesheets read them. A Heading falls back to Primary and a Button falls
+     * back to Accent, both at a higher specificity than the kit's per-tag Theme
+     * Style. Put the brand red in the wrong slot and every call to action on
+     * the site renders in whatever colour Accent happens to hold. So Primary is
+     * the headline colour and Accent is the brand red, and a heading or a
+     * button a client adds next month is right before they touch anything.
+     */
     system_colors: [
       { _id: 'primary',   title: 'Headline White', color: '#FFFFFF' },
-      { _id: 'secondary', title: 'Brand Red',      color: '#ED1B24' },
+      { _id: 'secondary', title: 'Section Black',  color: '#0A0A0A' },
       { _id: 'text',      title: 'Body Grey',      color: '#A6A6A6' },
-      { _id: 'accent',    title: 'Section Black',  color: '#0A0A0A' },
+      { _id: 'accent',    title: 'Brand Red',      color: '#ED1B24' },
     ],
     custom_colors: [
       { _id: 'cardblk', title: 'Card Black', color: '#1A1A1A' },

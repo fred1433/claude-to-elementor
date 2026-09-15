@@ -29,8 +29,15 @@ export const EXTRACT = `(() => {
       const m = bg && bg.match(/url\\(["']?([^"')]+)["']?\\)/);
       if (m) imgs.push({ name: base(m[1]), ok: true, bg: true });
     }
+    // The colour of the section's filled call to action, on both sides. Text
+    // and links can be perfect while the button renders in the wrong colour,
+    // because Elementor's button stylesheet falls back to a global rather than
+    // to the kit's Theme Style. On a lead generation page that is not a detail.
+    const filled = Array.from(el.querySelectorAll('a')).map((a) => getComputedStyle(a).backgroundColor)
+      .find((c) => c && c !== 'transparent' && !/rgba\(0, 0, 0, 0\)/.test(c));
     return {
       id,
+      ctaColor: filled || null,
       text: norm(el.innerText),
       links: Array.from(el.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')),
       images: imgs,

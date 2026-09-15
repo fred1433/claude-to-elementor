@@ -172,6 +172,24 @@ const edit = auditEditability(template, model);
 
 const codedPng = PNG.sync.read(fs.readFileSync(path.join(SHOTS, 'coded-desktop.png')));
 const wpPng = PNG.sync.read(fs.readFileSync(path.join(SHOTS, 'elementor-desktop.png')));
+/**
+ * One more check per section, and the only one that compares the two renders
+ * rather than the render to the model: does the filled call to action come out
+ * the same colour on both sides. This exists because it caught a real failure,
+ * a black Call button where the client's brand red belonged.
+ */
+const codedCta = new Map(codedExtract.map((s) => [s.id, s.ctaColor]));
+for (const sec of result.sections) {
+  const a = codedCta.get(sec.id);
+  const b = (wpExtract.find((w) => w.id === sec.id) || {}).ctaColor;
+  if (!a && !b) continue;
+  const ok = a === b;
+  sec.checks.push({ name: 'call to action colour', ok, detail: ok ? '' : `coded ${a || 'none'}, Elementor ${b || 'none'}` });
+  sec.ok = sec.checks.every((c) => c.ok);
+  result.total++; if (ok) result.pass++;
+}
+result.percent = result.total ? Math.round((result.pass / result.total) * 1000) / 10 : 0;
+
 const codedBox = new Map(codedExtract.map((s) => [s.id, s.box]));
 const wpBox = new Map(wpExtract.map((s) => [s.id, s.box]));
 for (const s of result.sections) {
