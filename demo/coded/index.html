@@ -135,30 +135,19 @@
   </div>
 </section>
 
-<section data-sec="reviews" data-name="Reviews" class="bg-coal">
-  <div class="mx-auto max-w-[1200px] px-6 py-32">
-    <p data-slot="eyebrow" class="font-display text-[13px] font-600 uppercase tracking-[0.22em] text-brand">Reviews</p>
-    <h2 data-slot="heading" class="mt-8 font-display text-[36px] font-600 leading-[1.1] tracking-[-0.022em] text-white md:text-[48px]">What our clients say</h2>
-    <p data-slot="rating" class="mt-8 text-[16px] leading-[1.75] text-mist">Three sample reviews, written for this fixture.</p>
-    <div data-list="items" class="mt-16 flex flex-wrap gap-6">
-      <article data-item class="quote">
-        <p data-slot="body" class="quote-body">They pulled a section of decking before quoting and found rot over the porch that two other contractors had walked straight past. The price went up, and I would rather have found out in June than in January.</p>
-        <p data-slot="author" class="quote-author">Sample Reviewer A</p>
-        <p data-slot="meta" class="quote-meta">Fictional review</p>
-      </article>
-      <article data-item class="quote">
-        <p data-slot="body" class="quote-body">Four people, one truck of panels, and the whole standing seam went on in three days with the site swept every evening. The ridge detail is the tidiest thing on the house.</p>
-        <p data-slot="author" class="quote-author">Sample Reviewer B</p>
-        <p data-slot="meta" class="quote-meta">Fictional review</p>
-      </article>
-      <article data-item class="quote">
-        <p data-slot="body" class="quote-body">We had ice dams every February for six years. They corrected the intake venting during the reroof and we have not had one since. Nobody else even mentioned the soffits.</p>
-        <p data-slot="author" class="quote-author">Sample Reviewer C</p>
-        <p data-slot="meta" class="quote-meta">Fictional review</p>
-      </article>
-    </div>
-  </div>
-</section>
+<!-- The Reviews section has been removed on purpose, to make a red CI run.
+
+     Nothing else changed. The tests pass. The converter produces a valid
+     template for the nine remaining sections, byte for byte reproducible. The
+     editability audit passes. Elementor imports it, WordPress renders it, the
+     global colour still propagates, the saved edit still survives a reload, and
+     the fidelity score comes back at 100 percent, because fidelity compares the
+     render to the page it was handed and that page no longer has any reviews to
+     lose.
+
+     The only thing that notices is demo/source-inventory.json, which remembers
+     what the source page is supposed to contain. That is the whole point of it,
+     and the reason this branch is kept. -->
 
 <section data-sec="split" data-name="Slate work" data-reverse class="bg-ink">
   <div class="mx-auto flex max-w-[1200px] flex-col gap-16 px-6 py-32 md:flex-row-reverse md:items-center">
