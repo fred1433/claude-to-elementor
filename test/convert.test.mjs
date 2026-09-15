@@ -116,11 +116,13 @@ test('every editability rule holds', () => {
 
 test('the kit carries the design, the page carries none of it', () => {
   const kit = buildKit();
-  // The client's own brand red, read off their live stylesheet.
-  assert.equal(kit.system_colors.find((c) => c._id === 'secondary').color, '#ED1B24');
-  // "Primary" is what Elementor gives a heading a client adds later, so it has
-  // to be the headline pair, not the accent.
-  assert.equal(kit.system_colors.find((c) => c._id === 'primary').color, '#FFFFFF');
+  const slot = (id) => kit.system_colors.find((c) => c._id === id).color;
+  // The system slots are read by Elementor's own widget stylesheets, so which
+  // colour sits in which slot decides what an untouched widget looks like.
+  // Heading falls back to Primary, Button falls back to Accent.
+  assert.equal(slot('primary'), '#FFFFFF', 'a heading added later must come out white, not branded');
+  assert.equal(slot('accent'), '#ED1B24', "a button added later must come out in the client's red");
+  assert.equal(kit.button_background_color, slot('accent'), 'the theme style and the Accent slot must agree');
   assert.equal(kit.custom_typography.find((t) => t._id === 'disphero').typography_font_size.size, 72);
   assert.equal((JSON.stringify(template).match(/#[0-9A-Fa-f]{3,8}/g) || []).length, 0);
   assert.ok((JSON.stringify(template).match(/globals\/colors\?id=/g) || []).length > 0);
