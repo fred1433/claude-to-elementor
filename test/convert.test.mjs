@@ -109,6 +109,38 @@ test('an unknown section type fails the build instead of degrading silently', ()
   assert.throws(() => convert(parsePage(broken)), /No handler for section type "carousel-of-doom"/);
 });
 
+/**
+ * Layouts outside the covered scope, written the way a designer would rather
+ * than shaped to fit the converter. The point is not that these convert; it is
+ * that each one stops with the name of what is missing, instead of being
+ * quietly flattened into something a client cannot edit. A partial output with
+ * a precise reason beats a success bought by simplifying the design.
+ */
+const OUT_OF_SCOPE = `<!doctype html><html><head><title>Out of scope</title></head><body>
+  <section data-sec="pricing-table" data-name="Plans">
+    <h2 data-slot="heading">Plans</h2>
+    <div data-list="items"><article data-item><h3 data-slot="title">Basic</h3></article></div>
+  </section>
+  <section data-sec="faq-accordion" data-name="Questions">
+    <h2 data-slot="heading">Questions</h2>
+  </section>
+  <section data-sec="masonry-gallery" data-name="Work">
+    <h2 data-slot="heading">Recent work</h2>
+  </section>
+</body></html>`;
+
+test('layouts outside the covered scope are refused by name, not simplified', () => {
+  const m = parsePage(OUT_OF_SCOPE);
+  assert.deepEqual(m.sections.map((s) => s.type), ['pricing-table', 'faq-accordion', 'masonry-gallery']);
+  // The parser reads them fine: the refusal is a deliberate decision of the
+  // converter, not an accident of parsing.
+  assert.equal(m.sections[0].lists.items.length, 1);
+  for (const type of ['pricing-table', 'faq-accordion', 'masonry-gallery']) {
+    const one = parsePage(OUT_OF_SCOPE.replace(/data-sec="(?!${type})[a-z-]+"/g, `data-sec="${type}"`));
+    assert.throws(() => convert(one), new RegExp(`No handler for section type "${type}"`));
+  }
+});
+
 test('every editability rule holds', () => {
   const r = auditEditability(template, model);
   for (const f of r.findings) assert.ok(f.ok, `${f.name} -> ${f.detail}`);

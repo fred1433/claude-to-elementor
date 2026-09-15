@@ -96,6 +96,19 @@ It is not a restriction on how a page looks. Every page in this repository's dem
 is the client's real content laid out freely: the grammar constrains what the
 parts are called, never how they are designed.
 
+## The counter-test, and its limits
+
+`test/convert.test.mjs` feeds the converter three layouts written the way a
+designer would write them and outside the covered scope: a pricing table, an
+accordion of questions, a masonry gallery. Each stops with the name of what is
+missing. The parser reads them perfectly well, so the refusal is a decision
+rather than an accident, and that is the behaviour being tested: no silent
+flattening into something a client cannot edit.
+
+What this is not: a blind counter-test by someone with no knowledge of the
+annotations. That is the right next experiment and it has not been run. Take it
+for what it is, a demonstration that the failure mode is a named refusal.
+
 ## The check the grammar cannot do on its own
 
 A grammar tells you how to convert what you were handed. It cannot tell you that
