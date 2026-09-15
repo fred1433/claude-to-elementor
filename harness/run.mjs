@@ -1,0 +1,215 @@
+#!/usr/bin/env node
+/**
+ * The fidelity harness, end to end, in one process.
+ *
+ *   convert -> boot a real WordPress -> import through Elementor -> render both
+ *   pages in a browser -> compare against the model -> write the report.
+ *
+ * Exits non-zero if a single check fails. That is the point: the harness is
+ * what makes "faithful" a fact instead of a claim.
+ */
+import { spawn } from 'node:child_process';
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { chromium } from 'playwright';
+import { PNG } from 'pngjs';
+import { parsePage } from '../src/parse.mjs';
+import { convert } from '../src/convert.mjs';
+import { buildKit } from '../src/kit.mjs';
+import { score, writeJson } from './fidelity.mjs';
+import { auditEditability } from './editability.mjs';
+import { EXTRACT, SETTLE } from './extract.mjs';
+import { crop, similarity } from './imgutil.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const WP_PORT = Number(process.env.CTE_WP_PORT || 9411);
+const CODED_PORT = Number(process.env.CTE_CODED_PORT || 9412);
+const WP_VERSION = process.env.CTE_WP_VERSION || '6.8';
+const EL_VERSION = fs.readFileSync(new URL('./elementor.version', import.meta.url), 'utf8').trim();
+const OUT = path.join(ROOT, 'report');
+const SHOTS = path.join(OUT, 'shots');
+const WIDTHS = [[1440, 'desktop'], [768, 'tablet'], [390, 'mobile']];
+const CODED = process.env.CTE_CODED || path.join(ROOT, 'demo/coded/index.html');
+
+const log = (...a) => console.log('[harness]', ...a);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/* ------------------------------------------------------------ 1. convert */
+log('converting', path.relative(ROOT, CODED));
+const model = parsePage(fs.readFileSync(CODED, 'utf8'));
+const template = convert(model, { mediaBase: 'https://cleancutautoshield.com/wp-content/uploads/cte', title: 'CleanCut Auto Shield — Home' });
+const kit = buildKit();
+fs.mkdirSync(path.join(ROOT, 'out'), { recursive: true });
+fs.writeFileSync(path.join(ROOT, 'out/template.json'), JSON.stringify(template, null, 2) + '\n');
+fs.writeFileSync(path.join(ROOT, 'out/kit.json'), JSON.stringify(kit, null, 2) + '\n');
+fs.writeFileSync(path.join(ROOT, 'out/model.json'), JSON.stringify(model, null, 2) + '\n');
+
+/* -------------------------------------------------------------- 2. stage */
+const MNT = path.join(ROOT, 'harness/.mnt');
+fs.rmSync(MNT, { recursive: true, force: true });
+fs.mkdirSync(MNT, { recursive: true });
+for (const f of ['out/template.json', 'out/kit.json', 'harness/setup.php']) fs.copyFileSync(path.join(ROOT, f), path.join(MNT, path.basename(f)));
+fs.cpSync(path.join(ROOT, 'demo/coded/assets'), path.join(MNT, 'assets'), { recursive: true });
+
+const bpPath = path.join(ROOT, 'harness/blueprint.json');
+
+/* ------------------------------------- 2b. Elementor, pinned and cached */
+const CACHE = path.join(ROOT, 'harness/.cache');
+const EL_DIR = path.join(CACHE, `elementor-${EL_VERSION}`);
+if (!fs.existsSync(path.join(EL_DIR, 'elementor/elementor.php'))) {
+  fs.mkdirSync(EL_DIR, { recursive: true });
+  const url = `https://downloads.wordpress.org/plugin/elementor.${EL_VERSION}.zip`;
+  log('downloading Elementor', EL_VERSION, '(pinned, cached after the first run)');
+  const zip = path.join(CACHE, `elementor-${EL_VERSION}.zip`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`could not download Elementor ${EL_VERSION}: HTTP ${res.status}`);
+  fs.writeFileSync(zip, Buffer.from(await res.arrayBuffer()));
+  await new Promise((res2, rej) => {
+    const p = spawn('unzip', ['-q', '-o', zip, '-d', EL_DIR], { stdio: 'inherit' });
+    p.on('exit', (c) => (c === 0 ? res2() : rej(new Error('unzip failed'))));
+  });
+}
+
+/* ------------------------------------------- 3. a real WordPress, booting */
+log(`booting WordPress ${WP_VERSION} + Elementor ${EL_VERSION} (WordPress Playground, PHP-WASM, no Docker)`);
+const pg = spawn('npx', ['@wp-playground/cli', 'server', '--port', String(WP_PORT), '--wp', WP_VERSION, '--blueprint', bpPath,
+  '--mount', `${MNT}:/wordpress/cte`,
+  '--mount', `${path.join(EL_DIR, 'elementor')}:/wordpress/wp-content/plugins/elementor`],
+  // detached so that the whole process group can be killed: npx spawns the real
+  // server as a child and would otherwise leave it holding the port.
+  { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+let pgOut = '';
+pg.stdout.on('data', (d) => { pgOut += d; });
+pg.stderr.on('data', (d) => { pgOut += d; });
+let pgDead = false;
+pg.on('exit', (c) => { pgDead = true; log('playground exited with', c); });
+
+const shut = () => { try { process.kill(-pg.pid, 'SIGKILL'); } catch { try { pg.kill('SIGKILL'); } catch {} } };
+process.on('exit', shut); process.on('SIGINT', () => { shut(); process.exit(130); });
+
+async function waitHttp(url, ms) {
+  const until = Date.now() + ms;
+  while (Date.now() < until) {
+    if (pgDead) throw new Error(`WordPress Playground exited early:\n${pgOut.split('\n').filter((l) => !/\d+%/.test(l)).slice(-25).join('\n')}`);
+    try { const r = await fetch(url); if (r.ok) return; } catch {}
+    await sleep(2000);
+  }
+  throw new Error(`timed out waiting for ${url}\n${pgOut.split('\n').filter((l) => !/\d+%/.test(l)).slice(-25).join('\n')}`);
+}
+await waitHttp(`http://127.0.0.1:${WP_PORT}/`, 420000);
+log('WordPress is up on', `http://127.0.0.1:${WP_PORT}/`);
+
+/* ------------------------------ 3b. activate, then import, over HTTP */
+async function drive(step) {
+  const r = await fetch(`http://127.0.0.1:${WP_PORT}/cte/setup.php?step=${step}`);
+  const body = await r.text();
+  let json; try { json = JSON.parse(body); } catch { throw new Error(`setup.php?step=${step} did not return JSON (HTTP ${r.status}):\n${body.slice(0, 1200)}`); }
+  if (!json.ok) throw new Error(`setup.php?step=${step} failed: ${json.error}`);
+  return json;
+}
+const act = await drive('activate');
+log(`  wp: Elementor ${act.elementor} activated`);
+const imp = await drive('import');
+for (const l of imp.log) log('  wp:', l);
+
+/* ----------------------------------------- 4. serve the coded page as http */
+const codedDir = path.dirname(CODED);
+const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml' };
+const statics = http.createServer((req, res) => {
+  const p = path.join(codedDir, decodeURIComponent(req.url.split('?')[0]) === '/' ? '/index.html' : decodeURIComponent(req.url.split('?')[0]));
+  if (!p.startsWith(codedDir) || !fs.existsSync(p)) { res.writeHead(404).end(); return; }
+  res.writeHead(200, { 'content-type': MIME[path.extname(p)] || 'application/octet-stream' });
+  fs.createReadStream(p).pipe(res);
+}).listen(CODED_PORT);
+
+/* --------------------------------------------------- 5. render and measure */
+fs.rmSync(SHOTS, { recursive: true, force: true });
+fs.mkdirSync(SHOTS, { recursive: true });
+const browser = await chromium.launch();
+const shots = {};
+let codedExtract = null, wpExtract = null;
+
+for (const [width, label] of WIDTHS) {
+  const ctx = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
+  for (const [side, url] of [['coded', `http://127.0.0.1:${CODED_PORT}/`], ['elementor', `http://127.0.0.1:${WP_PORT}/`]]) {
+    const page = await ctx.newPage();
+    const failed = [];
+    page.on('response', (r) => { if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`); });
+    page.on('pageerror', (e) => failed.push(`js: ${e.message}`));
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 });
+    const settled = await page.evaluate(SETTLE).catch((e) => ({ stillInvisible: -1, brokenImages: [], error: e.message }));
+    if (settled.stillInvisible) log(`  ${side}-${label}: ${settled.stillInvisible} elements never finished their entrance animation`);
+    for (const src of settled.brokenImages) {
+      let status = 'unreachable';
+      try { const r = await fetch(src); status = `HTTP ${r.status} ${r.headers.get('content-type') || ''} ${r.headers.get('content-length') || ''}B`; } catch (e) { status = e.message; }
+      log(`  ${side}-${label}: image did not render: ${src} -> ${status}`);
+    }
+    const file = path.join(SHOTS, `${side}-${label}.png`);
+    await page.screenshot({ path: file, fullPage: true });
+    shots[`${side}-${label}`] = path.relative(OUT, file);
+    if (width === 1440) {
+      const data = await page.evaluate(EXTRACT);
+      if (side === 'coded') codedExtract = data; else wpExtract = data;
+      fs.writeFileSync(path.join(OUT, `${side}.html`), await page.content());
+      if (failed.length) { log(`  ${side}: ${failed.length} failed requests / errors`); for (const f of failed.slice(0, 8)) log('   ', f); }
+    }
+    await page.close();
+  }
+  await ctx.close();
+  log('captured', label);
+}
+await browser.close();
+statics.close();
+
+/* ------------------------------------------------------------- 6. compare */
+const result = score(model, wpExtract);
+const edit = auditEditability(template, model);
+
+const codedPng = PNG.sync.read(fs.readFileSync(path.join(SHOTS, 'coded-desktop.png')));
+const wpPng = PNG.sync.read(fs.readFileSync(path.join(SHOTS, 'elementor-desktop.png')));
+const codedBox = new Map(codedExtract.map((s) => [s.id, s.box]));
+const wpBox = new Map(wpExtract.map((s) => [s.id, s.box]));
+for (const s of result.sections) {
+  const a = codedBox.get(s.id), b = wpBox.get(s.id);
+  if (!a || !b || a.height < 10 || b.height < 10) { s.visual = null; continue; }
+  const ca = crop(codedPng, a.top, a.height), cb = crop(wpPng, b.top, b.height);
+  s.visual = similarity(ca, cb).percent;
+  s.heights = { coded: a.height, elementor: b.height };
+  fs.writeFileSync(path.join(SHOTS, `sec-${s.id}-coded.png`), PNG.sync.write(ca));
+  fs.writeFileSync(path.join(SHOTS, `sec-${s.id}-elementor.png`), PNG.sync.write(cb));
+}
+
+const report = {
+  generatedAt: new Date().toISOString(),
+  source: path.relative(ROOT, CODED),
+  wordpress: WP_VERSION,
+  sections: result.sections,
+  fidelity: { passed: result.pass, total: result.total, percent: result.percent },
+  extraSections: result.extra,
+  editability: edit,
+  counts: {
+    containers: JSON.stringify(template).match(/"elType":"container"/g)?.length || 0,
+    widgets: (JSON.stringify(template).match(/"elType":"widget"/g) || []).length,
+  },
+  shots,
+};
+writeJson(path.join(OUT, 'report.json'), report);
+
+const bad = result.sections.filter((s) => !s.ok);
+log('');
+for (const s of result.sections) {
+  const v = s.visual === null ? ' visual   n/a' : ` visual ${String(s.visual).padStart(5)}%`;
+  log(`${s.ok ? 'PASS' : 'FAIL'}  ${s.id.padEnd(20)} ${String(s.checks.filter((c) => c.ok).length).padStart(2)}/${String(s.checks.length).padEnd(2)} checks ${v}`);
+  for (const c of s.checks.filter((c) => !c.ok)) log(`        -> ${c.name}: ${c.detail}`);
+}
+log('');
+log(`fidelity     ${result.pass}/${result.total} checks (${result.percent}%)`);
+log(`editability  ${edit.findings.filter((f) => f.ok).length}/${edit.findings.length} assertions`);
+for (const f of edit.findings.filter((f) => !f.ok)) log(`        -> ${f.name}: ${f.detail}`);
+if (result.extra.length) log(`extra sections in the Elementor render: ${result.extra.join(', ')}`);
+log(`report       ${path.relative(ROOT, path.join(OUT, 'report.json'))}`);
+
+shut();
+process.exit(bad.length === 0 && edit.ok && result.extra.length === 0 ? 0 : 1);

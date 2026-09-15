@@ -1,0 +1,425 @@
+{
+  "generatedAt": "2026-09-15T13:47:40.205Z",
+  "source": "demo/coded/index.html",
+  "wordpress": "6.8",
+  "sections": [
+    {
+      "id": "hero",
+      "name": "Hero",
+      "type": "hero",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (5)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (2)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 94.2,
+      "heights": {
+        "coded": 846,
+        "elementor": 528
+      }
+    },
+    {
+      "id": "certification-bar",
+      "name": "Certification bar",
+      "type": "trustbar",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (0)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 99.8,
+      "heights": {
+        "coded": 143,
+        "elementor": 144
+      }
+    },
+    {
+      "id": "studio-intro",
+      "name": "Studio intro",
+      "type": "split",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (4)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (1)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 91.5,
+      "heights": {
+        "coded": 657,
+        "elementor": 605
+      }
+    },
+    {
+      "id": "services",
+      "name": "Services",
+      "type": "cards",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (21)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (6)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 96.8,
+      "heights": {
+        "coded": 1093,
+        "elementor": 1110
+      }
+    },
+    {
+      "id": "why-cleancut",
+      "name": "Why CleanCut",
+      "type": "numbered",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (23)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (0)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 96.9,
+      "heights": {
+        "coded": 1254,
+        "elementor": 1204
+      }
+    },
+    {
+      "id": "reviews",
+      "name": "Reviews",
+      "type": "reviews",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (12)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (0)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 96.8,
+      "heights": {
+        "coded": 812,
+        "elementor": 770
+      }
+    },
+    {
+      "id": "tesla-protection",
+      "name": "Tesla protection",
+      "type": "split",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (4)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (1)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 93.4,
+      "heights": {
+        "coded": 657,
+        "elementor": 625
+      }
+    },
+    {
+      "id": "studio-location",
+      "name": "Studio location",
+      "type": "location",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (5)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (2)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 97.7,
+      "heights": {
+        "coded": 545,
+        "elementor": 507
+      }
+    },
+    {
+      "id": "closing-cta",
+      "name": "Closing CTA",
+      "type": "cta",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (3)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (2)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 95.8,
+      "heights": {
+        "coded": 467,
+        "elementor": 389
+      }
+    },
+    {
+      "id": "footer",
+      "name": "Footer",
+      "type": "footer",
+      "checks": [
+        {
+          "name": "section present",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "section in order",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "text preserved (14)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "links preserved (10)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "name": "images present and loaded (1)",
+          "ok": true,
+          "detail": ""
+        }
+      ],
+      "ok": true,
+      "visual": 98.6,
+      "heights": {
+        "coded": 521,
+        "elementor": 517
+      }
+    }
+  ],
+  "fidelity": {
+    "passed": 46,
+    "total": 46,
+    "percent": 100
+  },
+  "extraSections": [],
+  "editability": {
+    "findings": [
+      {
+        "name": "No raw HTML or shortcode widget carries client content",
+        "ok": true,
+        "detail": "81 widgets, all native Elementor controls"
+      },
+      {
+        "name": "Every text on the page is a widget field the client can type into",
+        "ok": true,
+        "detail": "91 strings, all in editable fields"
+      },
+      {
+        "name": "Every photo is a media field, not a background hack",
+        "ok": true,
+        "detail": "4 image widgets, 2 section backgrounds"
+      },
+      {
+        "name": "No font size is set on any element: typography comes from the kit",
+        "ok": true,
+        "detail": "all sizes inherited from Site Settings"
+      },
+      {
+        "name": "No colour is hard-coded: every one resolves through the kit",
+        "ok": true,
+        "detail": "102 colour references, all global"
+      },
+      {
+        "name": "Every section is named and has a stable CSS id",
+        "ok": true,
+        "detail": "hero, certification-bar, studio-intro, services, why-cleancut, reviews, tesla-protection, studio-location, closing-cta, footer"
+      },
+      {
+        "name": "No custom CSS and no inline styles anywhere",
+        "ok": true,
+        "detail": "clean"
+      }
+    ],
+    "ok": true
+  },
+  "counts": {
+    "containers": 46,
+    "widgets": 81
+  },
+  "shots": {
+    "coded-desktop": "shots/coded-desktop.png",
+    "elementor-desktop": "shots/elementor-desktop.png",
+    "coded-tablet": "shots/coded-tablet.png",
+    "elementor-tablet": "shots/elementor-tablet.png",
+    "coded-mobile": "shots/coded-mobile.png",
+    "elementor-mobile": "shots/elementor-mobile.png"
+  }
+}

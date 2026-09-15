@@ -1,0 +1,24 @@
+{
+  "name": "claude-to-elementor",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "description": "Turn a finished, coded page into a client-editable Elementor build. Deterministic converter, real WordPress import, measured fidelity.",
+  "scripts": {
+    "convert": "node src/cli.mjs convert",
+    "harness": "node harness/run.mjs",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "node-html-parser": "^6.1.13",
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@wp-playground/cli": "^1.0.0",
+    "playwright": "^1.49.0",
+    "tailwindcss": "^4.3.3"
+  }
+}

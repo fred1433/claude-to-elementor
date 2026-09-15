@@ -1,0 +1,6 @@
+node_modules/
+harness/.mnt/
+harness/.cache/
+report/shots/
+report/*.html
+*.log
