@@ -11,8 +11,13 @@ import { container, heading, textEditor, image, button, iconList, testimonial, s
  * nothing to run a hundred times.
  */
 
-const SECTION_PAD = px(120, 24, 120, 24);
+// Section padding mirrors the coded page exactly (py-32, and py-44 on the
+// hero). Getting this wrong costs nothing in the checks and everything in the
+// side by side: a 50px difference per section compounds down the page until
+// the two renders no longer line up.
+const SECTION_PAD = px(128, 24, 128, 24);
 const SECTION_PAD_M = px(64, 20, 64, 20);
+const HERO_PAD = px(176, 24, 176, 24);
 
 const notes = [];
 export function takeNotes() { const n = [...notes]; notes.length = 0; return n; }
@@ -50,13 +55,28 @@ function bgSettings(url) {
 
 const solid = (globalKey) => ({ background_background: 'classic', __globals__: { background_color: globalKey } });
 
-function stack(id, sec, ctx, { align, headingTag = 'h2' } = {}) {
+/**
+ * Measure. A headline set across 1200 pixels is the difference between a page
+ * that was designed and a page that was generated, so the converter carries a
+ * width per slot and hands it to Elementor's own width control, which stays
+ * editable in the Advanced tab. Full width again on mobile.
+ */
+const measure = (pct) => (pct ? {
+  _element_width: 'initial',
+  _element_custom_width: { unit: '%', size: pct, sizes: [] },
+  _element_custom_width_mobile: { unit: '%', size: 100, sizes: [] },
+} : {});
+
+function stack(id, sec, ctx, { align, headingTag = 'h2', headWidth = 52, bodyWidth = 54, lede = false } = {}) {
   const { s } = ctx;
   const out = [];
   let d = 0;
   if (sec.slots.eyebrow) out.push(heading(s(`${sec.id}/eyebrow`), { text: sec.slots.eyebrow.text, tag: 'h6', align, animation: 'fadeInUp', delay: (d += 0) }));
-  if (sec.slots.heading) out.push(heading(s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: headingTag, align, animation: 'fadeInUp', delay: (d += 100) }));
-  if (sec.slots.body) out.push(textEditor(s(`${sec.id}/body`), { html: sec.slots.body.html, align, animation: 'fadeInUp', delay: (d += 100), extra: { margin: px(24, 0, 0, 0) } }));
+  if (sec.slots.heading) out.push(heading(s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: headingTag, align, animation: 'fadeInUp', delay: (d += 100), extra: measure(headWidth) }));
+  if (sec.slots.body) out.push(textEditor(s(`${sec.id}/body`), {
+    html: sec.slots.body.html, align, animation: 'fadeInUp', delay: (d += 100),
+    extra: { margin: px(24, 0, 0, 0), ...measure(bodyWidth), ...(lede ? { __globals__: { typography_typography: 'globals/typography?id=lede1900' } } : {}) },
+  }));
   return out;
 }
 
@@ -109,8 +129,8 @@ function grid(sec, ctx, cards, per) {
 }
 
 const HANDLERS = {
-  hero: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, bgSettings(mediaUrl(sec.bg, ctx.mediaBase)), [
-    ...stack(null, sec, ctx, { headingTag: 'h1' }),
+  hero: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, { ...bgSettings(mediaUrl(sec.bg, ctx.mediaBase)), padding: HERO_PAD }, [
+    ...stack(null, sec, ctx, { headingTag: 'h1', headWidth: 54, bodyWidth: 48, lede: true }),
     ...actions(sec, ctx),
   ]),
 
@@ -127,7 +147,7 @@ const HANDLERS = {
     const text = container(s(`${sec.id}/col-text`), {
       name: 'Text column', elementId: `${sec.id}-text`, isInner: true,
       settings: { content_width: 'full', flex_direction: 'column', flex_gap: gap(0), width: { unit: '%', size: 48 }, width_mobile: { unit: '%', size: 100 } },
-      children: [...stack(null, sec, ctx), ...actions(sec, ctx)],
+      children: [...stack(null, sec, ctx, { headWidth: 0, bodyWidth: 0 }), ...actions(sec, ctx)],
     });
     const media = container(s(`${sec.id}/col-media`), {
       name: 'Media column', elementId: `${sec.id}-media`, isInner: true,
@@ -144,8 +164,8 @@ const HANDLERS = {
     }, [text, media]);
   },
 
-  cards: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, solid(GLOBAL.panel || GLOBAL.card), [
-    ...stack(null, sec, ctx),
+  cards: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, solid(GLOBAL.panel), [
+    ...stack(null, sec, ctx, { headWidth: 48, bodyWidth: 54 }),
     grid(sec, ctx, sec.lists.items.map((it) => (s, i) => [
       heading(s(`${sec.id}/card-${i}/title`), { text: it.slots.title.text, tag: 'h3' }),
       textEditor(s(`${sec.id}/card-${i}/body`), { html: it.slots.body.html, extra: { margin: px(16, 0, 0, 0) } }),
@@ -158,7 +178,7 @@ const HANDLERS = {
   ]),
 
   numbered: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, solid(GLOBAL.surface), [
-    ...stack(null, sec, ctx),
+    ...stack(null, sec, ctx, { headWidth: 46, bodyWidth: 54 }),
     grid(sec, ctx, sec.lists.items.map((it) => (s, i) => [
       heading(s(`${sec.id}/card-${i}/index`), { text: it.slots.index.text, tag: 'div', role: 'stepnum' }),
       heading(s(`${sec.id}/card-${i}/title`), { text: it.slots.title.text, tag: 'h3', extra: { margin: px(20, 0, 0, 0) } }),
@@ -172,7 +192,7 @@ const HANDLERS = {
     const rating = sec.slots.rating ? [starRating(s(`${sec.id}/stars`), { rating: 5, title: sec.slots.rating.text })] : [];
     return section(s(sec.id), sec.name, sec.id, solid(GLOBAL.card), [
       heading(s(`${sec.id}/eyebrow`), { text: sec.slots.eyebrow.text, tag: 'h6', animation: 'fadeInUp' }),
-      heading(s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: 'h2', animation: 'fadeInUp', delay: 100 }),
+      heading(s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: 'h2', animation: 'fadeInUp', delay: 100, extra: measure(50) }),
       ...rating,
       grid(sec, ctx, sec.lists.items.map((it) => (s2, i) => [
         testimonial(s2(`${sec.id}/card-${i}/t`), { content: it.slots.body.text, name: it.slots.author.text, job: it.slots.meta.text }),
@@ -181,7 +201,7 @@ const HANDLERS = {
   },
 
   location: (sec, ctx) => section(ctx.s(sec.id), sec.name, sec.id, solid(GLOBAL.card), [
-    ...stack(null, sec, ctx),
+    ...stack(null, sec, ctx, { headWidth: 50, bodyWidth: 46 }),
     ...actions(sec, ctx),
   ]),
 
@@ -190,7 +210,7 @@ const HANDLERS = {
     background_overlay_opacity: { unit: 'px', size: 0.84, sizes: [] },
     flex_align_items: 'center',
   }, [
-    heading(ctx.s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: 'h2', align: 'center', animation: 'fadeInUp' }),
+    heading(ctx.s(`${sec.id}/heading`), { text: sec.slots.heading.text, tag: 'h2', align: 'center', animation: 'fadeInUp', extra: measure(56) }),
     ...actions(sec, ctx, 'center'),
   ]),
 
@@ -211,7 +231,7 @@ const HANDLERS = {
     }));
     return section(s(sec.id), sec.name, sec.id, {
       ...solid(GLOBAL.surface),
-      padding: px(88, 24, 88, 24),
+      padding: px(96, 24, 96, 24),
       border_border: 'solid',
       border_width: { unit: 'px', top: '1', right: '0', bottom: '0', left: '0', isLinked: false },
       __globals__: { background_color: GLOBAL.surface, border_color: GLOBAL.hairline },

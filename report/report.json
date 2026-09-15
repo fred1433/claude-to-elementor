@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T13:47:40.205Z",
+  "generatedAt": "2026-09-15T13:57:31.628Z",
   "source": "demo/coded/index.html",
   "wordpress": "6.8",
   "sections": [
@@ -35,10 +35,10 @@
         }
       ],
       "ok": true,
-      "visual": 94.2,
+      "visual": 95.6,
       "heights": {
         "coded": 846,
-        "elementor": 528
+        "elementor": 785
       }
     },
     {
@@ -73,7 +73,7 @@
         }
       ],
       "ok": true,
-      "visual": 99.8,
+      "visual": 100,
       "heights": {
         "coded": 143,
         "elementor": 144
@@ -111,10 +111,10 @@
         }
       ],
       "ok": true,
-      "visual": 91.5,
+      "visual": 92,
       "heights": {
         "coded": 657,
-        "elementor": 605
+        "elementor": 621
       }
     },
     {
@@ -144,10 +144,10 @@
         }
       ],
       "ok": true,
-      "visual": 96.8,
+      "visual": 97.2,
       "heights": {
         "coded": 1093,
-        "elementor": 1110
+        "elementor": 1154
       }
     },
     {
@@ -177,10 +177,10 @@
         }
       ],
       "ok": true,
-      "visual": 96.9,
+      "visual": 96.8,
       "heights": {
         "coded": 1254,
-        "elementor": 1204
+        "elementor": 1300
       }
     },
     {
@@ -210,10 +210,10 @@
         }
       ],
       "ok": true,
-      "visual": 96.8,
+      "visual": 97.3,
       "heights": {
         "coded": 812,
-        "elementor": 770
+        "elementor": 786
       }
     },
     {
@@ -248,10 +248,10 @@
         }
       ],
       "ok": true,
-      "visual": 93.4,
+      "visual": 94.4,
       "heights": {
         "coded": 657,
-        "elementor": 625
+        "elementor": 641
       }
     },
     {
@@ -281,10 +281,10 @@
         }
       ],
       "ok": true,
-      "visual": 97.7,
+      "visual": 97.6,
       "heights": {
         "coded": 545,
-        "elementor": 507
+        "elementor": 523
       }
     },
     {
@@ -322,7 +322,7 @@
       "visual": 95.8,
       "heights": {
         "coded": 467,
-        "elementor": 389
+        "elementor": 405
       }
     },
     {
@@ -357,10 +357,10 @@
         }
       ],
       "ok": true,
-      "visual": 98.6,
+      "visual": 98.7,
       "heights": {
         "coded": 521,
-        "elementor": 517
+        "elementor": 533
       }
     }
   ],

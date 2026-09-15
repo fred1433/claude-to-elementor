@@ -11,9 +11,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "176",
           "right": "24",
-          "bottom": "120",
+          "bottom": "176",
           "left": "24",
           "isLinked": false
         },
@@ -68,6 +68,17 @@
           "settings": {
             "title": "Automotive Protection & Restyling",
             "header_size": "h1",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 54,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "_animation": "fadeInUp",
             "_animation_delay": 100,
             "__globals__": {
@@ -90,6 +101,20 @@
               "bottom": "0",
               "left": "0",
               "isLinked": false
+            },
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 48,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
+            "__globals__": {
+              "typography_typography": "globals/typography?id=lede1900"
             },
             "_animation": "fadeInUp",
             "_animation_delay": 200
@@ -259,9 +284,9 @@
         "flex_direction": "row",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -483,9 +508,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -527,6 +552,17 @@
           "settings": {
             "title": "PPF. Coatings. Wraps. Tint.",
             "header_size": "h2",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 48,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "_animation": "fadeInUp",
             "_animation_delay": 100,
             "__globals__": {
@@ -549,6 +585,17 @@
               "bottom": "0",
               "left": "0",
               "isLinked": false
+            },
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 54,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
             },
             "_animation": "fadeInUp",
             "_animation_delay": 200
@@ -1483,9 +1530,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -1527,6 +1574,17 @@
           "settings": {
             "title": "Paint Protection Studio Portland, OR",
             "header_size": "h2",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 46,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "_animation": "fadeInUp",
             "_animation_delay": 100,
             "__globals__": {
@@ -1549,6 +1607,17 @@
               "bottom": "0",
               "left": "0",
               "isLinked": false
+            },
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 54,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
             },
             "_animation": "fadeInUp",
             "_animation_delay": 200
@@ -2281,9 +2350,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -2325,6 +2394,17 @@
           "settings": {
             "title": "What our clients say",
             "header_size": "h2",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 50,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "_animation": "fadeInUp",
             "_animation_delay": 100,
             "__globals__": {
@@ -2656,9 +2736,9 @@
         "flex_direction": "row-reverse",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -2880,9 +2960,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -2924,6 +3004,17 @@
           "settings": {
             "title": "2740 SE Long St, Portland",
             "header_size": "h2",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 50,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "_animation": "fadeInUp",
             "_animation_delay": 100,
             "__globals__": {
@@ -2946,6 +3037,17 @@
               "bottom": "0",
               "left": "0",
               "isLinked": false
+            },
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 46,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
             },
             "_animation": "fadeInUp",
             "_animation_delay": 200
@@ -3050,9 +3152,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "120",
+          "top": "128",
           "right": "24",
-          "bottom": "120",
+          "bottom": "128",
           "left": "24",
           "isLinked": false
         },
@@ -3093,6 +3195,17 @@
           "settings": {
             "title": "Get in touch about your vehicle",
             "header_size": "h2",
+            "_element_width": "initial",
+            "_element_custom_width": {
+              "unit": "%",
+              "size": 56,
+              "sizes": []
+            },
+            "_element_custom_width_mobile": {
+              "unit": "%",
+              "size": 100,
+              "sizes": []
+            },
             "align": "center",
             "_animation": "fadeInUp",
             "__globals__": {
@@ -3200,9 +3313,9 @@
         "flex_direction": "column",
         "padding": {
           "unit": "px",
-          "top": "88",
+          "top": "96",
           "right": "24",
-          "bottom": "88",
+          "bottom": "96",
           "left": "24",
           "isLinked": false
         },

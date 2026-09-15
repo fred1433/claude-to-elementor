@@ -84,6 +84,7 @@ export function buildKit() {
     ],
     custom_typography: [
       { _id: 'disphero', title: 'Hero headline', ...type('Rajdhani', 72, '600', 1.02, -2) },
+      { _id: 'lede1900', title: 'Lede',          ...type('Open Sans', 19, '400', 1.65, 0) },
       { _id: 'person17', title: 'Name',          ...type('Rajdhani', 17, '600', 1.3, 0) },
       { _id: 'kicker12', title: 'Kicker',        ...type('Rajdhani', 12, '600', 1.4, 2, 'uppercase') },
       { _id: 'stepnum',  title: 'Step number',   ...type('Rajdhani', 40, '700', 1, 0) },
