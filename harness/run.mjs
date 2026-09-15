@@ -54,7 +54,9 @@ const MNT = path.join(ROOT, 'harness/.mnt');
 fs.rmSync(MNT, { recursive: true, force: true });
 fs.mkdirSync(MNT, { recursive: true });
 for (const f of ['out/template.json', 'out/kit.json', 'harness/setup.php']) fs.copyFileSync(path.join(ROOT, f), path.join(MNT, path.basename(f)));
-fs.cpSync(path.join(ROOT, 'demo/coded/assets'), path.join(MNT, 'assets'), { recursive: true });
+// media travels with the page, not from a fixed folder: the harness has to be
+// pointable at any coded page, not just the one in this repository
+fs.cpSync(path.join(path.dirname(CODED), 'assets'), path.join(MNT, 'assets'), { recursive: true });
 
 const bpPath = path.join(ROOT, 'harness/blueprint.json');
 
