@@ -111,6 +111,7 @@ widgets is a build nobody dares rebrand.
 | `src/` | parser, converter, kit, widget factories |
 | `harness/` | Playground boot, the WordPress side, the fidelity and editability checks |
 | `skill/claude-to-elementor/` | the Claude Code skill: the loop and the rules that earn their place |
+| `docs/RUNBOOK.md` | the whole loop as steps, including how to put it on a client's site |
 | `docs/PRO-MAPPING.md` | free vs Pro, mapped not faked |
 | `demo/` | the coded page, the provenance of its content, and the source inventory |
 | `out/`, `report/` | generated: the template, the kit, the fidelity report |
