@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15T13:57:31.628Z",
+  "generatedAt": "2026-09-15T14:01:10.697Z",
   "source": "demo/coded/index.html",
   "wordpress": "6.8",
   "sections": [
@@ -408,6 +408,108 @@
         "detail": "clean"
       }
     ],
+    "ok": true
+  },
+  "coverage": {
+    "checks": [
+      {
+        "name": "Hero: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Hero: 2 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Certification bar: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Studio intro: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Studio intro: 1 required phrase rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Services: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Services: 6 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Why CleanCut: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Why CleanCut: 5 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Reviews: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Reviews: 4 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Tesla protection: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Tesla protection: 1 required phrase rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Studio location: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Studio location: 2 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Closing CTA: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Closing CTA: 1 required phrase rendered",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Footer: present in the coded page",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "Footer: 3 required phrases rendered",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "pass": 19,
+    "total": 19,
     "ok": true
   },
   "counts": {

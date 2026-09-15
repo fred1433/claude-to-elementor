@@ -1,0 +1,17 @@
+{
+  "note": "What the client's live homepage contains, section by section, read off https://cleancutautoshield.com/ on 2026-09-15. The harness checks the coded page against this list before it checks anything else. Without it, dropping a section from the coded page would produce a template that imports cleanly, renders without an error, and quietly loses part of the client's site: the fidelity score would still read 100%, because it compares the render to the page it was given. This file is the only thing that remembers what the page was supposed to contain.",
+  "source": "https://cleancutautoshield.com/",
+  "readOn": "2026-09-15",
+  "sections": [
+    { "id": "hero", "name": "Hero", "must": ["Automotive Protection & Restyling", "503-542-2773"] },
+    { "id": "certification-bar", "name": "Certification bar", "must": [] },
+    { "id": "studio-intro", "name": "Studio intro", "must": ["Portland based automotive protection and restyling studio"] },
+    { "id": "services", "name": "Services", "must": ["Paint Protection Film", "Ceramic Coatings", "Paint Correction", "Color PPF", "Color Change Wraps", "Window Tinting"] },
+    { "id": "why-cleancut", "name": "Why CleanCut", "must": ["Certified Installers", "Brand New Facility", "Stand Out Process", "Experience & Expertise", "Cleancut Guaranteed"] },
+    { "id": "reviews", "name": "Reviews", "must": ["What our clients say", "Justin Pai", "Herbert Pacheco", "Lindsay House"] },
+    { "id": "tesla-protection", "name": "Tesla protection", "must": ["Tesla protection"] },
+    { "id": "studio-location", "name": "Studio location", "must": ["2740 SE Long St", "503-334-9896"] },
+    { "id": "closing-cta", "name": "Closing CTA", "must": ["503-542-2773"] },
+    { "id": "footer", "name": "Footer", "must": ["Quick Links", "Services", "Workmanship Warranty"] }
+  ]
+}

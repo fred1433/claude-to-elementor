@@ -63,6 +63,15 @@ order. Pixel similarity is measured per section too and reported next to the
 checks, but deliberately kept out of the score: two rendering engines never agree
 to the pixel, and a number that cannot reach 100 tells a client nothing.
 
+**Coverage** runs first, and it is the check that exists because of what the
+others cannot see. The fidelity score compares the render to the coded page it
+was given, so a section dropped upstream, during design, disappears from both
+sides and the score still reads 100%.
+[`demo/source-inventory.json`](demo/source-inventory.json) lists the client's
+real sections and the phrases each has to carry, read off their live site. It is
+the only thing that remembers what the page was supposed to contain, and the
+repository keeps a deliberately red CI run to prove it blocks.
+
 **Editability** is seven assertions on the template that ships, in
 [`harness/editability.mjs`](harness/editability.mjs):
 
@@ -103,7 +112,7 @@ widgets is a build nobody dares rebrand.
 | `harness/` | Playground boot, the WordPress side, the fidelity and editability checks |
 | `skill/claude-to-elementor/` | the Claude Code skill: the loop and the rules that earn their place |
 | `docs/PRO-MAPPING.md` | free vs Pro, mapped not faked |
-| `demo/` | the coded page and the provenance of its content |
+| `demo/` | the coded page, the provenance of its content, and the source inventory |
 | `out/`, `report/` | generated: the template, the kit, the fidelity report |
 
 MIT.

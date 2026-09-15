@@ -68,3 +68,16 @@ edit. The grammar is the discipline that keeps the output editable.
 It is not a restriction on how a page looks. Every page in this repository's demo
 is the client's real content laid out freely: the grammar constrains what the
 parts are called, never how they are designed.
+
+## The check the grammar cannot do on its own
+
+A grammar tells you how to convert what you were handed. It cannot tell you that
+something was never handed over. Drop a section during design and the converter
+produces a smaller template that imports cleanly and renders without an error,
+and the fidelity score still reads 100%, because it compares the render to the
+coded page.
+
+That is what `demo/source-inventory.json` is for: the client's real sections and
+the phrases each one carries, read off their live site, checked before anything
+else. It is the cheapest file in the repository and the only one that would have
+caught a page shipped with a piece missing.

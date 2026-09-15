@@ -20,6 +20,7 @@ import { convert } from '../src/convert.mjs';
 import { buildKit } from '../src/kit.mjs';
 import { score, writeJson } from './fidelity.mjs';
 import { auditEditability } from './editability.mjs';
+import { coverage } from './coverage.mjs';
 import { EXTRACT, SETTLE } from './extract.mjs';
 import { crop, similarity } from './imgutil.mjs';
 
@@ -164,6 +165,8 @@ await browser.close();
 statics.close();
 
 /* ------------------------------------------------------------- 6. compare */
+const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'demo/source-inventory.json'), 'utf8'));
+const cover = coverage(inventory, model, wpExtract);
 const result = score(model, wpExtract);
 const edit = auditEditability(template, model);
 
@@ -189,6 +192,7 @@ const report = {
   fidelity: { passed: result.pass, total: result.total, percent: result.percent },
   extraSections: result.extra,
   editability: edit,
+  coverage: cover,
   counts: {
     containers: JSON.stringify(template).match(/"elType":"container"/g)?.length || 0,
     widgets: (JSON.stringify(template).match(/"elType":"widget"/g) || []).length,
@@ -205,6 +209,8 @@ for (const s of result.sections) {
   for (const c of s.checks.filter((c) => !c.ok)) log(`        -> ${c.name}: ${c.detail}`);
 }
 log('');
+log(`coverage     ${cover.pass}/${cover.total} of the client's own sections and phrases`);
+for (const c of cover.checks.filter((c) => !c.ok)) log(`        -> ${c.name}: ${c.detail}`);
 log(`fidelity     ${result.pass}/${result.total} checks (${result.percent}%)`);
 log(`editability  ${edit.findings.filter((f) => f.ok).length}/${edit.findings.length} assertions`);
 for (const f of edit.findings.filter((f) => !f.ok)) log(`        -> ${f.name}: ${f.detail}`);
@@ -212,4 +218,4 @@ if (result.extra.length) log(`extra sections in the Elementor render: ${result.e
 log(`report       ${path.relative(ROOT, path.join(OUT, 'report.json'))}`);
 
 shut();
-process.exit(bad.length === 0 && edit.ok && result.extra.length === 0 ? 0 : 1);
+process.exit(bad.length === 0 && edit.ok && cover.ok && result.extra.length === 0 ? 0 : 1);
