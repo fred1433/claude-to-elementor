@@ -69,8 +69,16 @@ was given, so a section dropped upstream, during design, disappears from both
 sides and the score still reads 100%.
 [`demo/source-inventory.json`](demo/source-inventory.json) lists the client's
 real sections and the phrases each has to carry, read off their live site. It is
-the only thing that remembers what the page was supposed to contain, and the
-repository keeps a deliberately red CI run to prove it blocks.
+the only thing that remembers what the page was supposed to contain.
+
+The branch `demo/harness-blocks-a-dropped-section` removes the Reviews section
+from the coded page and changes nothing else. Its CI run is worth reading:
+the tests pass, the conversion is valid and byte-for-byte reproducible, the
+editability audit passes, Elementor imports the template, WordPress renders it,
+and **fidelity comes back 42 of 42, 100%**. Only coverage fails, 17 of 19, and
+the build goes red. That gap, between a page that is faithful to what it was
+given and a page that is faithful to the client's site, is the whole reason the
+inventory exists.
 
 **Editability** is seven assertions on the template that ships, in
 [`harness/editability.mjs`](harness/editability.mjs):
