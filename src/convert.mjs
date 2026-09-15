@@ -91,7 +91,7 @@ function actions(sec, ctx, align) {
       flex_justify_content: align === 'center' ? 'center' : 'flex-start',
       flex_gap: gap(16), padding: px(24, 0, 0, 0), width: { unit: '%', size: 100 },
     },
-    children: ctas.map((c, i) => button(s(`${sec.id}/cta-${i}`), { text: c.text, href: c.href, variant: c.variant, animation: 'fadeInUp', delay: 300 })),
+    children: ctas.map((c, i) => button(s(`${sec.id}/cta-${i}`), { text: c.text, href: c.href, variant: c.variant, siteHost: ctx.siteHost, animation: 'fadeInUp', delay: 300 })),
   })];
 }
 
@@ -172,7 +172,7 @@ const HANDLERS = {
       ...(it.slots.cta ? [container(s(`${sec.id}/card-${i}/act`), {
         name: 'Link', elementId: `${sec.id}-card-${i + 1}-link`, isInner: true,
         settings: { content_width: 'full', flex_direction: 'row', padding: px(24, 0, 0, 0), width: { unit: '%', size: 100 } },
-        children: [button(s(`${sec.id}/card-${i}/cta`), { text: it.slots.cta.text, href: it.slots.cta.href, variant: 'link' })],
+        children: [button(s(`${sec.id}/card-${i}/cta`), { text: it.slots.cta.text, href: it.slots.cta.href, variant: 'link', siteHost: ctx.siteHost })],
       })] : []),
     ]), 3),
   ]),
@@ -248,7 +248,9 @@ const HANDLERS = {
 
 export function convert(model, { mediaBase = '', title } = {}) {
   const s = makeIdFactory();
-  const ctx = { s, mediaBase };
+  let siteHost = '';
+  try { siteHost = mediaBase ? new URL(mediaBase).host : ''; } catch { siteHost = ''; }
+  const ctx = { s, mediaBase, siteHost };
   notes.length = 0;
   const content = model.sections.map((sec) => {
     const h = HANDLERS[sec.type];

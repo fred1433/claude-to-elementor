@@ -39,8 +39,15 @@ export function image(id, { src, alt, align = 'center', width, animation, extra 
   return widget(id, 'image', s);
 }
 
-export function button(id, { text, href, variant = 'primary', align, animation, delay }) {
-  const external = /^https?:/i.test(href) && !href.includes('cleancutautoshield.com');
+/**
+ * A link counts as external when its host is not the site being built. The host
+ * comes from the media base, so the same page converted for a staging domain
+ * and for production marks its own links correctly. With no media base, nothing
+ * is assumed and no link is marked external.
+ */
+export function button(id, { text, href, variant = 'primary', align, animation, delay, siteHost = '' }) {
+  let external = false;
+  try { external = /^https?:/i.test(href) && !!siteHost && new URL(href).host !== siteHost; } catch { external = false; }
   const s = {
     text,
     link: { url: href, is_external: external ? 'on' : '', nofollow: '', custom_attributes: '' },

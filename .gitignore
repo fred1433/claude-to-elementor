@@ -4,3 +4,11 @@ harness/.cache/
 report/shots/
 report/*.html
 *.log
+
+# A run on a real business page stays local. A site being public does not make
+# its copy and photographs ours to redistribute, so the public repository ships
+# a synthetic sample instead and that run lives on as screenshots and a report.
+# See demo/README.md.
+demo/client-run/
+out/
+report/report.json

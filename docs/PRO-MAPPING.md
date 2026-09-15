@@ -1,9 +1,15 @@
 # Elementor Pro, honestly
 
-The demonstration runs on **Elementor free**. WordPress Playground installs
-plugins from the WordPress.org directory, and Pro is licensed, so it cannot be
-installed there. Rather than simulate Pro widgets and call it a result, here is
-what is free, what is Pro, and what the converter would emit instead.
+Everything in this repository is **validated on Elementor Free**. Elementor Pro
+and the CRM, tracking and form integrations are **not tested**: no licence was
+used, so nothing here was run against them.
+
+Playground can install Pro from a ZIP, so this is a licence question, not a
+technical limitation. Saying otherwise would be an excuse rather than a reason.
+
+The consequence is stated plainly rather than softened: a feature that would
+depend on a Pro widget has not been converted, only mapped. It is not counted
+anywhere as working.
 
 ## Free, and used in the demo
 
@@ -37,6 +43,13 @@ free build is not a downgrade in the part that matters to a client: global
 styles, named sections, native widgets and editable fields are all free-tier
 features, and those are what decide whether a non-technical client can safely
 edit the page.
+
+## Not claimed
+
+This does not reproduce anybody's production stack. It was not run against
+Elementor Pro, against a CRM, against analytics or against a live theme, and no
+claim about behaviour on such an installation is made here. The way to find out
+is a trial on a staging copy of the real site.
 
 ## The one thing genuinely worth Pro here
 

@@ -1,8 +1,13 @@
-# The section grammar
+# The conversion contract
 
 A coded page converts to Elementor without anyone rebuilding it by hand when it
-says what its parts *are*. That is all this grammar is: three data attributes
-that name the parts of a page, plus a fixed vocabulary of section types.
+says what its parts *are*. That is all this is: three data attributes that name
+the parts of a page, plus a vocabulary.
+
+It is a **documented conversion contract with a covered scope**, not a promise
+to convert any HTML. A page written outside the scope is reported with its
+exceptions; it is never quietly simplified until it fits. A partial output with
+a precise reason is worth more than a success obtained by weakening the input.
 
 Nothing else is read. Classes, inline styles, wrappers, the CSS framework, the
 order of divs: the converter ignores all of it. Restyle the page as much as you
@@ -29,7 +34,22 @@ What a slot yields depends on the tag, not on a configuration file:
 `<img>` gives `{src, alt}`, `<a>` gives `{text, href, variant}`, anything else
 gives its text and its inner HTML.
 
-## The vocabulary
+## Two ways in
+
+**A new page**, written with the contract in mind: the skill carries the
+vocabulary, the page carries the attributes, conversion is direct.
+
+**A page that already exists** goes through a normalisation step first, which
+maps its markup onto the vocabulary, preserves the reference rendering, emits
+the list of what it could not map, and counts the manual interventions it
+needed. That count is part of the cost of the job and is presented as such,
+never hidden inside a "fully automated" claim.
+
+If the HTML and the Elementor build are both produced from one structured
+description, the honest name for that is a **workflow with two outputs**, not a
+converter.
+
+## The vocabulary, and the primitives underneath
 
 | `data-sec` | Slots | Lists | Becomes, in Elementor |
 |---|---|---|---|
@@ -44,6 +64,13 @@ gives its text and its inner HTML.
 | `footer` | `legal` | `columns`: `media` `title` `body` + `links` | a row of columns, native Icon List for link menus |
 
 `*` means the slot can repeat.
+
+Underneath the section types there is a smaller and more durable set of
+primitives: heading, rich text, image, button, list, columns, background with
+overlay, spacing, and the responsive variants of each. The section types are
+compositions of those, which is why adding one is a handler rather than a
+redesign, and why the contract survives a client whose pages look nothing like
+these.
 
 Adding a type is one handler in `src/convert.mjs`. An unknown type is a hard
 error, never a silent fallback: a page that does not convert should say so

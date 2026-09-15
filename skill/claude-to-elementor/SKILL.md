@@ -48,17 +48,22 @@ faster still.
   rendering engines never agree to the pixel, and a number that cannot reach 100
   tells a client nothing.
 
-## Where the free tier stops
+## What has been validated, and what has not
 
-The demo runs on Elementor free, because WordPress Playground installs from the
-plugin directory and Pro is licensed. What that costs, exactly, is in
-`docs/PRO-MAPPING.md`: entrance animations are free and the converter emits them;
-scroll-linked motion, sticky sections, forms and off-canvas are Pro, and the
-document says which Pro widget each grammar type would target instead. Nothing
-in the converter depends on free-versus-Pro; the Pro path is a different set of
-widget names in the same handlers.
+Everything here is **validated on Elementor Free**. Pro, CRM, tracking and form
+integrations are **not tested**: no licence was used. Playground can install Pro
+from a ZIP, so that is a licence question rather than a technical one, and a
+feature that would need a Pro widget counts as mapped, never as converted.
+`docs/PRO-MAPPING.md` says which Pro widget each grammar type would target.
+Nothing in the converter depends on free versus Pro: the Pro path is a different
+set of widget names inside the same handlers.
 
 ## What this does not do
 
 It does not design the page, it does not write the copy, and it does not invent
 content. It moves a finished page into Elementor and proves it arrived intact.
+
+It is also not a promise about a particular installation. A conversion contract
+covers a documented scope; a page written outside that scope is reported with
+its exceptions rather than silently simplified to fit. Before promising anything
+about a specific site, run it on a staging copy of that site.

@@ -46,6 +46,14 @@ The conversion is deterministic: element ids are hashed from the structural
 path, so the same page always produces the same JSON, byte for byte. A diff in
 review means the page changed, not that the generator ran again.
 
+## 2b. What the conversion does not cover
+
+A page written outside the contract does not get bent into shape. The
+normalisation step reports what it could not map and counts the manual
+interventions it needed, and that count belongs in the quote. A partial output
+with a precise reason is worth more than a success obtained by quietly
+simplifying the design.
+
 ## 3. Prove it before anyone sees it
 
 ```bash
@@ -61,8 +69,15 @@ browser at three widths, and checks:
   Elementor render, in the right order
 - seven editability rules on the template itself
 
-Non-zero exit on the first failure, and the per-section report lands in
-`report/report.json` with screenshots beside it.
+It also changes one global colour and checks that every call to action follows
+it, makes a real edit, saves it, reloads, and confirms the change survives on
+the public page and at 390 pixels wide. Non-zero exit on the first failure, and
+the per-section report lands in `report/report.json` with screenshots and the
+interventions log beside it.
+
+Read that log before quoting a job. "No manual rebuild in Elementor" is not the
+same sentence as "no human touched it", and the difference is where the hours
+go.
 
 ## 4. Put it on the client's site
 

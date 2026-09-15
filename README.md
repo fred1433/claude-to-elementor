@@ -33,7 +33,7 @@ npx playwright install chromium
 
 # convert
 node src/cli.mjs convert --in demo/coded/index.html --out out \
-  --media-base "https://cleancutautoshield.com/wp-content/uploads/cte"
+  --media-base "https://northbridge-roofworks.example/wp-content/uploads"
 
 # prove it: boots WordPress + Elementor, imports, renders, compares, scores
 node harness/run.mjs
@@ -45,14 +45,30 @@ The harness needs no Docker and no local PHP. It runs WordPress in
 deploy script would. It exits non-zero the moment a section, a sentence, a link
 or an image fails to survive the conversion.
 
-## The demo
+## The sample
 
-`demo/coded/` is one real homepage of a working auto-protection studio, rebuilt
-as a modern coded page: same copy, same offers, same phone numbers, same reviews,
-same photos. Every string and every image is sourced in
-[`demo/content-provenance.md`](demo/content-provenance.md). Nothing was written,
-embellished or invented, and no price appears anywhere, because the site does not
-publish any.
+`demo/coded/` is **Northbridge Roofworks**, a roofing contractor that does not
+exist: invented copy, 555 phone numbers, reviews labelled as fictional, and
+images drawn by `demo/make-sample-media.mjs`. A site being public does not make
+its copy and photographs free to redistribute in someone else's demonstration,
+so the public fixture is synthetic. It exercises the same ten section types, the
+same repeaters and the same nested footer lists a real page does.
+[`demo/README.md`](demo/README.md) explains the split, and how to point the
+harness at a different page and inventory.
+
+## Three objects, kept apart
+
+Conversion work slides into overclaiming unless the three things are named:
+
+| | |
+|---|---|
+| **A** | the source page, whatever exists today |
+| **B** | the coded page, the input to the conversion |
+| **C** | the Elementor build, the output |
+
+The harness compares **B to C**. It says nothing about whether B faithfully
+reproduces A, which is a design question answered by looking at them, and
+nothing about converting a file written by somebody else's tooling.
 
 ## What gets measured
 
@@ -107,10 +123,12 @@ widgets is a build nobody dares rebrand.
   in and nothing is duplicated. The harness runs offline, so it re-points the
   same template at a local library before importing; that rewrite is the only
   thing it changes.
-- **Free-tier widgets only.** Elementor Pro is licensed and Playground installs
-  from the plugin directory, so the demonstration could not honestly use it.
-  [`docs/PRO-MAPPING.md`](docs/PRO-MAPPING.md) says what is free, what is Pro,
-  and which Pro widget each grammar type would target instead. Nothing is faked.
+- **Validated on Elementor Free; Pro not tested.** No licence was used, so Pro,
+  CRM, tracking and form integrations were never run. Playground can install Pro
+  from a ZIP, so that is a licence question, not a technical one, and a feature
+  that would need a Pro widget counts as mapped rather than converted.
+  [`docs/PRO-MAPPING.md`](docs/PRO-MAPPING.md) says which widget each would
+  target. Nothing is simulated.
 
 ## Layout
 
@@ -120,6 +138,7 @@ widgets is a build nobody dares rebrand.
 | `src/` | parser, converter, kit, widget factories |
 | `harness/` | Playground boot, the WordPress side, the fidelity and editability checks |
 | `skill/claude-to-elementor/` | the Claude Code skill: the loop and the rules that earn their place |
+| `docs/CLAIMS.md` | what is claimed, what is not, and the content rights position |
 | `docs/RUNBOOK.md` | the whole loop as steps, including how to put it on a client's site |
 | `docs/PRO-MAPPING.md` | free vs Pro, mapped not faked |
 | `demo/` | the coded page, the provenance of its content, and the source inventory |

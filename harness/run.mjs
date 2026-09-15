@@ -23,6 +23,7 @@ import { auditEditability } from './editability.mjs';
 import { coverage } from './coverage.mjs';
 import { EXTRACT, SETTLE } from './extract.mjs';
 import { crop, similarity } from './imgutil.mjs';
+import { editInEditor, checkPublic, ctaColours } from './edit.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const WP_PORT = Number(process.env.CTE_WP_PORT || 9411);
@@ -33,6 +34,7 @@ const OUT = path.join(ROOT, 'report');
 const SHOTS = path.join(OUT, 'shots');
 const WIDTHS = [[1440, 'desktop'], [768, 'tablet'], [390, 'mobile']];
 const CODED = process.env.CTE_CODED || path.join(ROOT, 'demo/coded/index.html');
+const INVENTORY = process.env.CTE_INVENTORY || path.join(path.dirname(path.dirname(CODED)), 'source-inventory.json');
 
 const log = (...a) => console.log('[harness]', ...a);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -40,7 +42,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 /* ------------------------------------------------------------ 1. convert */
 log('converting', path.relative(ROOT, CODED));
 const model = parsePage(fs.readFileSync(CODED, 'utf8'));
-const template = convert(model, { mediaBase: 'https://cleancutautoshield.com/wp-content/uploads/cte', title: 'CleanCut Auto Shield, Home' });
+const template = convert(model, { mediaBase: process.env.CTE_MEDIA_BASE || '', title: process.env.CTE_TITLE || model.title });
 const kit = buildKit();
 fs.mkdirSync(path.join(ROOT, 'out'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'out/template.json'), JSON.stringify(template, null, 2) + '\n');
@@ -161,11 +163,51 @@ for (const [width, label] of WIDTHS) {
   await ctx.close();
   log('captured', label);
 }
-await browser.close();
 statics.close();
 
+/* ------------------------------- 5b. a global colour, changed and followed */
+const WP = `http://127.0.0.1:${WP_PORT}`;
+const shoot = async (page, name, full = false) => { await page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage: full }); };
+const before = await ctaColours({ browser, base: WP });
+const TEST_COLOUR = '#1D63FF';
+await drive(`recolor&color=%23${TEST_COLOUR.slice(1)}`);
+const after = await ctaColours({ browser, base: WP });
+await drive(`recolor&color=%23ED1B24`);
+const restored = await ctaColours({ browser, base: WP });
+const globalColour = {
+  buttons: before.length,
+  before: before[0] || null,
+  changedTo: after[0] || null,
+  allChanged: after.length > 0 && after.every((c) => c === 'rgb(29, 99, 255)'),
+  restored: restored.every((c) => c === before[0]),
+  testColour: TEST_COLOUR,
+};
+log(`global colour: ${globalColour.buttons} buttons, all followed the kit: ${globalColour.allChanged}, restored: ${globalColour.restored}`);
+
+/* ----------------------------- 5c. a real edit, in the Elementor editor */
+// the two widgets a client would realistically change: the page heading and the
+// name of the first offer
+const heroHeading = template.content[0].elements.find((e) => e.widgetType === 'heading' && e.settings.header_size === 'h1').settings.title;
+const firstOffer = (template.content.find((c) => c.settings._element_id === 'services') || { elements: [] })
+  .elements.flatMap((e) => e.elements || []).flatMap((e) => e.elements || [])
+  .filter((e) => e.widgetType === 'heading')[0]?.settings.title;
+const LONG = `${heroHeading}, and every thaw in between, which is a far longer heading than the one the designer wrote and has to reflow without breaking the section`;
+const OFFER = `${firstOffer}, Rolled On Site`;
+// addressed by the text being replaced: Elementor regenerates element ids on import
+const fallbackTargets = { [heroHeading]: LONG, ...(firstOffer ? { [firstOffer]: OFFER } : {}) };
+const editResult = await editInEditor({ browser, base: WP, pageId: imp.page_id, shotDir: SHOTS, shoot, fallbackTargets, longTitle: LONG, newOffer: OFFER });
+let publicAfter = {};
+if (editResult.ok) {
+  publicAfter = await checkPublic({ browser, base: WP, expect: editResult.edits.filter((e) => e.field !== 'a photo').map((e) => e.value), shoot });
+  log(`edit: saved in the editor, still there after reopening: ${editResult.persistedInEditor}; on the public page ${JSON.stringify(publicAfter)}`);
+} else {
+  log(`edit: FAILED, ${editResult.error}`);
+}
+
+await browser.close();
+
 /* ------------------------------------------------------------- 6. compare */
-const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'demo/source-inventory.json'), 'utf8'));
+const inventory = JSON.parse(fs.readFileSync(INVENTORY, 'utf8'));
 const cover = coverage(inventory, model, wpExtract);
 const result = score(model, wpExtract);
 const edit = auditEditability(template, model);
@@ -211,6 +253,8 @@ const report = {
   extraSections: result.extra,
   editability: edit,
   coverage: cover,
+  globalColour,
+  editorEdit: { ...editResult, publicAfter },
   counts: {
     containers: JSON.stringify(template).match(/"elType":"container"/g)?.length || 0,
     widgets: (JSON.stringify(template).match(/"elType":"widget"/g) || []).length,
