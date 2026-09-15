@@ -58,8 +58,9 @@ publish any.
 
 **Fidelity** is measured against the page model, not by eyeballing two
 screenshots. Every string, href and image file the coded page declares becomes
-one check the Elementor render has to satisfy, in the right section, in the right
-order. Pixel similarity is measured per section too and reported next to the
+one check the Elementor render has to satisfy, in the right section, in the
+right order, plus one check per section comparing the rendered colour of its
+call to action across the two pages. Pixel similarity is measured per section too and reported next to the
 checks, but deliberately kept out of the score: two rendering engines never agree
 to the pixel, and a number that cannot reach 100 tells a client nothing.
 
@@ -75,8 +76,8 @@ The branch `demo/harness-blocks-a-dropped-section` removes the Reviews section
 from the coded page and changes nothing else. Its CI run is worth reading:
 the tests pass, the conversion is valid and byte-for-byte reproducible, the
 editability audit passes, Elementor imports the template, WordPress renders it,
-and **fidelity comes back 42 of 42, 100%**. Only coverage fails, 17 of 19, and
-the build goes red. That gap, between a page that is faithful to what it was
+and **fidelity comes back 49 of 49, a clean 100%**. Only coverage fails, 17 of
+19, and the build goes red. That gap, between a page that is faithful to what it was
 given and a page that is faithful to the client's site, is the whole reason the
 inventory exists.
 
